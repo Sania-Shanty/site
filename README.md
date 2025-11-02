@@ -1,2 +1,2 @@
 # site
-CSI website
+Rough idea on how CSI website would be its not fully complete
