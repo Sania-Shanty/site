@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CSI SAU Tech Club</title>
+  
+  <!-- Tailwind CSS (for utility classes used in the markup) --><script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Font: Inter --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    /* --- 1. NEW DARK THEME (Black and Blue) --- */
+    :root{
+      --bg-color: #000000; /* CHANGED: True Black */
+      --primary-text-color: #f1f5f9; /* Light Text (slate-100) */
+      --secondary-text-color: #94a3b8; /* Muted Text (slate-400) */
+      --csi-blue: #007bff; /* Vibrant CSI Blue */
+      --csi-blue-light: #00aaff; /* Lighter variant for gradients */
+      --csi-blue-muted: #1e3a8a; /* Dark Muted Blue (indigo-900) */
+      --csi-blue-dark: #0056b3; 
+
+      /* Glassmorphism for DARK background */
+      --panel-bg: rgba(10, 10, 10, 0.5); /* CHANGED: Darker glass */
+      --panel-border: rgba(255, 255, 255, 0.05); /* Very subtle light border */
+      --panel-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    }
+    html,body{
+      background:var(--bg-color);
+      color:var(--primary-text-color);
+      font-family:'Inter',system-ui,Arial;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* --- 2. BACKGROUND VISUALS (Tech Connection Animation) --- */
+    #background-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1; /* Below grid and watermark */
+      pointer-events: none;
+      background: var(--bg-color); /* Ensure background is set */
+    }
+    
+    /* --- 3. WATERMARK (Circular Logo - IIIT Council Style) --- */
+    .watermark-logo-container {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2; /* Above canvas, below grid */
+      pointer-events: none;
+      opacity: 0.08; /* CHANGED: Increased visibility */
+      filter: none; /* CHANGED: Removed blur */
+    }
+    .watermark-logo-container img {
+      width: 60vmax; /* Large, dynamic size */
+      height: 60vmax;
+      object-fit: contain;
+      animation: subtle-drift 45s cubic-bezier(0.4, 0.4, 0.6, 0.6) infinite; 
+    }
+
+    @keyframes subtle-drift {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      25% {
+        transform: translate(5px, 10px) rotate(2deg);
+      }
+      50% {
+        transform: translate(0, 15px) rotate(-1deg);
+      }
+      75% {
+        transform: translate(-5px, 10px) rotate(1deg);
+      }
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+    }
+
+
+    /* --- 4. NEW BACKGROUND GRID --- */
+    .background-grid {
+        position: fixed;
+        inset: 0;
+        z-index: 3; /* Above watermark, below content */
+        pointer-events: none;
+        background-size: 40px 40px; /* Size of the grid cells */
+        background-image: 
+            linear-gradient(to right, rgba(50, 50, 50, 0.2) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(50, 50, 50, 0.2) 1px, transparent 1px);
+        opacity: 0.8; /* Subtle */
+    }
+
+    /* App content sits on top */
+    #app { position: relative; z-index: 4; } /* Content above grid */
+
+    /* --- 5. HEADER & NAVIGATION --- */
+    header { 
+      position: fixed; 
+      top: 15px; 
+      left:0; 
+      right:0; 
+      z-index: 10; 
+      display:flex; 
+      justify-content:center; 
+    }
+    .nav-wrap { 
+      background: var(--panel-bg); 
+      backdrop-filter: blur(12px); 
+      border: 1px solid var(--panel-border); 
+      box-shadow: var(--panel-shadow); 
+      padding:10px 20px; 
+      border-radius:999px; 
+      display:flex; 
+      align-items:center; 
+      gap:20px; 
+      width:min(1100px,96%); 
+    }
+    .brand{ display:flex; align-items:center; gap:12px; }
+    .brand img{ 
+      width:48px; 
+      height:48px; 
+      border-radius:50%; 
+      background: rgba(255,255,255, 0.1);
+      padding:4px; 
+      border: 2px solid rgba(0, 123, 255, 0.1);
+    }
+    .brand-text {
+      color: var(--primary-text-color);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .brand-subtext {
+      color: var(--secondary-text-color);
+      font-size: 0.75rem;
+    }
+
+    nav a { 
+      color:var(--secondary-text-color); 
+      font-weight:600; 
+      padding:8px 12px; 
+      border-radius:999px; 
+      text-decoration:none;
+      transition: all 0.2s ease;
+      position: relative; 
+      white-space: nowrap;
+    }
+    nav a::after { 
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 4px;
+      width: 0%;
+      height: 2px;
+      background: var(--csi-blue);
+      transition: all 0.2s ease-out;
+      transform: translateX(-50%);
+      border-radius: 999px;
+    }
+    nav a:hover {
+      color: var(--csi-blue);
+    }
+    nav a:hover::after {
+      width: 80%;
+    }
+    nav a.active{ 
+      color: var(--csi-blue);
+    }
+    nav a.active::after {
+      width: 80%;
+      background: var(--csi-blue);
+    }
+
+    /* --- 6. PAGE LAYOUT & SECTIONS --- */
+    .page-container{ 
+      width: min(1100px, 94%); 
+      padding-left: 20px;
+      padding-right: 20px;
+      margin: 0 auto; 
+      box-sizing:border-box; 
+    }
+    
+    section {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+      position: relative; 
+      z-index: 5; /* Sections on top of background layers */
+    }
+    
+    #home { 
+      min-height: 100vh; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      padding: 0 20px; 
+      text-align:center;
+    }
+    
+    .section-title {
+      font-size: 2.5rem; 
+      line-height: 1.2;
+      font-weight: 800; 
+      text-align: center;
+      margin-bottom: 3.5rem; 
+      color: var(--primary-text-color);
+      position: relative;
+    }
+    .section-title span {
+      color: var(--csi-blue);
+    }
+    .section-title::after { 
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -15px;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--csi-blue), var(--csi-blue-light));
+      border-radius: 999px;
+      transform: translateX(-50%);
+    }
+
+    /* ADDED: Rule to remove underline from contact title */
+    #contact .section-title::after {
+      display: none;
+    }
+
+    /* --- 7. HERO SECTION STYLES (NO BOX) --- */
+    .hero-content { 
+      max-width: 800px; 
+      margin-top: 50px; 
+    }
+    .title { 
+      font-family: 'Inter', system-ui; 
+      font-weight:900; 
+      font-size:56px; 
+      color: var(--primary-text-color); 
+      line-height:1.1; 
+      margin:0; 
+    }
+    .subtitle { 
+      color: var(--secondary-text-color); 
+      margin-top:20px; 
+      font-size: 1.15rem; 
+      max-width:700px; 
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .typing-cursor { 
+      display:inline-block; 
+      width:4px; 
+      height:1em; 
+      background:var(--csi-blue); 
+      margin-left:8px; 
+      animation:blink 0.8s infinite; 
+      vertical-align:middle; 
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* --- 8. GENERAL COMPONENTS (Panels, Buttons, Cards) --- */
+    .panel { 
+      background: var(--panel-bg); 
+      border: 1px solid var(--panel-border); 
+      backdrop-filter: blur(10px); 
+      padding: 28px; 
+      border-radius:14px; 
+      color:var(--secondary-text-color); 
+      transition: all 0.3s ease; 
+      box-shadow: var(--panel-shadow); 
+    }
+    .panel:hover {
+      background: rgba(15, 23, 42, 0.7); 
+      border-color: rgba(0, 123, 255, 0.2); 
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); 
+      transform: translateY(-2px);
+    }
+    
+    .muted { color:var(--secondary-text-color); }
+    .heading-strong { color: var(--primary-text-color); font-weight: 700; }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px; 
+      background: rgba(0, 123, 255, 0.1); 
+      border: 1px solid rgba(0, 123, 255, 0.2); 
+      color: var(--csi-blue-light); 
+      font-weight: 600;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn:hover {
+      background: var(--csi-blue); 
+      color: #fff; 
+      border-color: var(--csi-blue); 
+      box-shadow: 0 0 15px rgba(0, 123, 255, 0.3); 
+    }
+    
+    .primary-cta { 
+      display:inline-block; 
+      padding:14px 32px; 
+      background: linear-gradient(90deg, var(--csi-blue), var(--csi-blue-light)); 
+      color: #fff; 
+      font-weight:700; 
+      border-radius:999px; 
+      box-shadow: 0 10px 30px rgba(0, 123, 255, 0.25); 
+      text-decoration:none; 
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      font-size: 1.05rem;
+    }
+    .primary-cta:hover {
+      transform: translateY(-2px); 
+      box-shadow: 0 12px 40px rgba(0, 123, 255, 0.35); 
+    }
+
+    /* --- 9. ABOUT SECTION (REMOVED "Why Join") --- */
+    .about-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem; 
+        align-items: center;
+    }
+    @media (min-width: 1024px) { 
+        .about-grid {
+            grid-template-columns: 1fr; 
+        }
+    }
+    .about-text-content {
+        padding-right: 0; 
+    }
+
+    /* --- 10. TEAM SECTION --- */
+    .team-grid { 
+      display:grid; 
+      grid-template-columns: repeat(1, 1fr); 
+      gap:24px; 
+      width:100%; 
+    }
+    @media (min-width: 640px) {
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .team-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .lead-card { 
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(10px);
+      border-radius:14px; 
+      padding:24px; 
+      display:flex; 
+      flex-direction:column; 
+      align-items:center; 
+      gap:12px; 
+      transition: all .3s ease; 
+      box-shadow: var(--panel-shadow);
+      text-align:center;
+    }
+    .lead-card:hover{ 
+      transform: translateY(-4px); 
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1); 
+      border-color: rgba(0, 123, 255, 0.2); 
+    }
+    
+    .lead-avatar{ 
+      width:120px; 
+      height:120px; 
+      border-radius:50%; 
+      overflow:hidden; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      border: 5px solid var(--csi-blue); 
+      background: rgba(0, 123, 255, 0.1);
+      flex-shrink: 0; 
+    }
+    .lead-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* --- 11. EVENTS SECTION (Vertical Rectangles) --- */
+    /* NEW: Grid layout for event cards */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .events-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .events-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .event-card { 
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(10px);
+      border-radius:14px; 
+      padding: 0; /* Remove padding */
+      display:flex; 
+      flex-direction: column; /* CHANGED: Vertical stack */
+      align-items: stretch; /* CHANGED: Stretch items */
+      transition: all .3s ease; 
+      box-shadow: var(--panel-shadow);
+      overflow: hidden; /* Ensure image corners are rounded */
+    }
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+      border-color: rgba(0, 123, 255, 0.15);
+    }
+
+    .event-image {
+      width: 100%; /* CHANGED: Full width */
+      height: 180px; /* CHANGED: Fixed height */
+      object-fit: cover;
+      border-radius: 0; /* Remove radius */
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--panel-border); /* Add border */
+    }
+
+    .event-content {
+      padding: 20px; /* Add padding to content area */
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1; /* Allow content to grow */
+    }
+
+    .event-date {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      min-width: auto; /* CHANGED */
+      text-align: left; /* CHANGED */
+      margin-bottom: 12px; /* Add space */
+    }
+    .event-date .day {
+      font-size: 1.8rem; /* CHANGED */
+      font-weight: 800; 
+      color:var(--csi-blue);
+      line-height: 1;
+    }
+    .event-date .month {
+      font-size: 0.9rem;
+      color: var(--secondary-text-color);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .event-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(0, 123, 255, 0.1);
+      color: var(--csi-blue);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: auto; /* Push tag to bottom */
+      align-self: flex-start; /* Align tag to left */
+    }
+    
+    .event-card .heading-strong {
+        font-size: 1.25rem;
+    }
+    .event-card .muted {
+        font-size: 0.9rem;
+        margin-top: 8px;
+        margin-bottom: 16px;
+    }
+
+
+    /* --- 12. CONTACT FORM --- */
+    .form-group {
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+    .form-label {
+      display: block;
+      color: var(--primary-text-color);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 14px 18px; 
+      border-radius: 10px; 
+      border: 1px solid var(--panel-border); 
+      background: rgba(0, 0, 0, 0.2); /* Darker input */
+      color: var(--primary-text-color);
+      font-size: 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--csi-blue); 
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); 
+      background: var(--bg-color); /* Match page bg */
+    }
+    textarea.form-input {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    /* --- 13. FOOTER --- */
+    footer {
+      background: #000; /* Black footer */
+      color: rgba(255,255,255,0.7);
+      padding: 4rem 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 5rem;
+      position: relative;
+      z-index: 5;
+    }
+    footer a {
+      color: var(--csi-blue-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    footer a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* --- RESPONSIVE ADJUSTMENTS --- */
+    @media (max-width: 1024px){
+      section { padding-top: 4rem; padding-bottom: 4rem; }
+      .title { font-size:48px; }
+      .section-title { font-size: 2.25rem; } 
+    }
+    @media (max-width: 768px) { /* Tablet and below */
+        /* Event card layout is handled by grid */
+    }
+    @media (max-width: 640px){
+      .title{ font-size:36px } 
+      .nav-wrap { gap: 8px; padding: 8px 12px; } 
+      nav a { padding: 6px 10px; font-size: 0.875rem; }
+      .brand img { width: 40px; height: 40px; }
+      .brand-text { font-size: 1rem; }
+      .brand-subtext { display: none; } 
+      .section-title { font-size: 1.875rem; margin-bottom: 2.5rem; }
+      .section-title::after { bottom: -12px; width: 60px; height: 3px; }
+      .primary-cta, .btn { padding: 10px 20px; font-size: 0.95rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-text-content { padding-right: 0; }
+      .events-grid {
+        grid-template-columns: repeat(1, 1fr); /* 1 column on mobile */
+      }
+      .form-input { padding: 12px 16px; }
+    }
+    /* ADDED: Fix for typing animation wrapping */
+    @media (max-width: 480px) {
+      .title {
+        font-size: 28px; /* 1.75rem */
+      }
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- Tech Connection Background Canvas --><canvas id="background-canvas"></canvas>
+
+  <!-- Watermark (Circular Logo - IIIT Council Style) --><div class="watermark-logo-container">
+    <img src="assets/csi-circle.png" alt="CSI watermark" onerror="this.src='https://placehold.co/800x800/000000/ffffff?text=CSI&opacity=10'">
+  </div>
+
+  <!-- NEW Background Grid --><div class="background-grid"></div>
+
+  <div id="app">
+
+    <!-- Header with logo + centered nav --><header>
+      <div class="nav-wrap">
+        <!-- Brand Logo & Name --><div class="brand">
+          <img src="assets/csi-circle.png" alt="CSI logo" onerror="this.src='https://placehold.co/200x200/007bff/ffffff?text=CSI'">
+          <div>
+            <div class="brand-text">CSI CHAPTER — SAU</div>
+            <div class="brand-subtext hidden sm:block">Student Chapter • Technology & Community</div>
+          </div>
+        </div>
+
+        <!-- Navigation Links --><nav class="ml-auto flex gap-3 sm:gap-4 items-center">
+          <a class="nav-link" href="#home">Home</a>
+          <a class="nav-link" href="#about">About</a>
+          <a class="nav-link" href="#team">Team</a>
+          <a class="nav-link" href="#events">Events</a>
+          <a class="nav-link" href="#contact">Contact</a>
+        </nav>
+
+        <!-- "Join" Button --><div class="ml-2 sm:ml-4">
+          <button class="btn text-sm px-4 py-2 sm:px-6 sm:py-2.5" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Join Us</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN PAGE --><main>
+
+      <!-- HERO --><section id="home">
+        <div class="hero-content">
+          <h1 class="title">
+            <!-- Gradient updated to new colors --><span id="typing-effect" class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-400"></span>
+            <span class="typing-cursor" aria-hidden="true"></span>
+          </h1>
+          <p class="subtitle">Welcome to the official CSI Student Chapter at South Asian University — build skills, ship projects, and join a community of passionate tech students.</p>
+          <div class="mt-8 flex gap-4 justify-center">
+            <button class="primary-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Join The Club</button>
+            <button class="btn" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Learn More</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT (REMOVED "Why Join") --><section id="about">
+        <div class="page-container">
+          <h2 class="section-title">About <span>Us</span></h2>
+          
+          <div class="panel max-w-5xl mx-auto"> <!-- UNIFORM WIDTH --><div class="about-grid">
+                
+                <!-- Text & Mission/Vision --><div class="about-text-content">
+                  <p class="text-lg leading-relaxed mb-6">The Computer Society of India (CSI) Student Chapter at SAU is a vibrant hub dedicated to fostering innovation, collaboration, and learning among tech enthusiasts. We focus on providing hands-on experience and building a strong community.</p>
+                  
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                      <div class="panel p-5 text-sm">
+                          <strong class="heading-strong">Our Mission</strong>
+                          <p class="muted mt-2">Empowering students through practical projects, mentorship, and a collaborative learning environment.</p>
+                      </div>
+                      <div class="panel p-5 text-sm">
+                          <strong class="heading-strong">Our Vision</strong>
+                          <p class="muted mt-2">To cultivate a dynamic community of tech makers who create impactful solutions and drive technological advancement.</p>
+                      </div>
+                  </div>
+                  
+                  <!-- REMOVED "Why Join" section --></div>
+              </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEAM: Core Team Leads --><section id="team">
+        <div class="page-container">
+          <h2 class="section-title">Core Team <span>Leads</span></h2> 
+
+          <div class="team-grid mt-6">
+            <!-- Card 1: Technical --><div class="lead-card">
+              <div class="lead-avatar">
+                <img src="assets/team1.jpg" alt="Technical Lead" onerror="this.src='https://placehold.co/320x320/007bff/ffffff?text=Alex'">
+              </div>
+              <div>
+                <div class="font-bold text-lg heading-strong">Alex Johnson</div>
+                <div class="muted text-sm mt-1">Technical Lead</div>
+                <p class="muted mt-3 text-sm">Heads technical programs, workshops and project mentorship.</p>
+              </div>
+            </div>
+            
+            <!-- Card 2: Design & Media --><div class="lead-card">
+              <div class="lead-avatar">
+                <img src="assets/team2.jpg" alt="Design Lead" onerror="this.src='https://placehold.co/320x320/007bff/ffffff?text=Devika'">
+              </div>
+              <div>
+                <div class="font-bold text-lg heading-strong">Devika Smith</div>
+                <div class="muted text-sm mt-1">Design & Media Lead</div>
+                <p class="muted mt-3 text-sm">Designs visuals, manages media & social presence.</p>
+              </div>
+            </div>
+            
+            <!-- Card 3: Event Management --><div class="lead-card">
+              <div class="lead-avatar">
+                <img src="assets/team3.jpg" alt="Events Lead" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Mike'">
+              </div>
+              <div>
+                <div class="font-bold text-lg heading-strong">Mike Chen</div>
+                <div class="muted text-sm mt-1">Events Lead</div>
+                <p class="muted mt-3 text-sm">Organizes events, coordinates logistics & volunteers.</p>
+              </div>
+            </div>
+            
+            <!-- Card 4: Finance --><div class="lead-card">
+              <div class="lead-avatar">
+                <img src="assets/team4.jpg" alt="Finance Lead" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Ria'">
+              </div>
+              <div>
+                <div class="font-bold text-lg heading-strong">Ria Patel</div>
+                <div class="muted text-sm mt-1">Finance & Treasury</div>
+                <p class="muted mt-3 text-sm">Manages budgets, sponsorships and finance operations.</p>
+              </div>
+            </div>
+
+            <!-- Card 5: R&D --><div class="lead-card">
+              <div class="lead-avatar">
+                <img src="assets/team5.jpg" alt="R&D Lead" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Sam'">
+              </div>
+              <div>
+                <div class="font-bold text-lg heading-strong">Sam Lee</div>
+                <div class="muted text-sm mt-1">Research & Development</div>
+                <p class="muted mt-3 text-sm">Explores new tech, long-term projects, and research papers.</p>
+              </div>
+            </div>
+            
+            <!-- Card 6: Docs & Outreach --><div class="lead-card">
+              <div class="lead-avatar">
+                <img src="assets/team6.jpg" alt="Outreach Lead" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Jasmine'">
+              </div>
+              <div>
+                <div class="font-bold text-lg heading-strong">Jasmine Kaur</div>
+                <div class="muted text-sm mt-1">Documentation & Outreach</div>
+                <p class="muted mt-3 text-sm">Manages public relations, documentation, and external comms.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- EVENTS (Vertical Rectangles) --><section id="events">
+        <div class="page-container">
+          <h2 class="section-title">Upcoming <span>Events</span></h2> 
+
+          <div class="events-grid max-w-5xl mx-auto"> <!-- UNIFORM WIDTH --><!-- Event 1 --><div class="event-card">
+              <img src="assets/event1.jpg" alt="React & Next.js" class="event-image" onerror="this.src='https://placehold.co/400x300/020617/94a3b8?text=Event+Image'">
+              <div class="event-content">
+                <div class="event-date"> 
+                  <div class="day">28</div> 
+                  <div class="month">NOV</div>
+                </div>
+                <div class="font-bold text-xl heading-strong">Intro to React & Next.js</div>
+                <p class="muted mt-1">Hands-on workshop covering fundamentals of React and server-side rendering for modern web development.</p>
+                <div class="event-tag">Workshop</div>
+              </div>
+            </div>
+            <!-- Event 2 --><div class="event-card">
+              <img src="assets/event2.jpg" alt="Hackathon" class="event-image" onerror="this.src='https://placehold.co/400x300/020617/94a3b8?text=Event+Image'">
+              <div class="event-content">
+                <div class="event-date"> 
+                  <div class="day">10</div> 
+                  <div class="month">DEC</div>
+                </div>
+                <div class="font-bold text-xl heading-strong">CSI Annual Hackathon 2024</div>
+                <p class="muted mt-1">Our flagship 48-hour hackathon: build innovative solutions, compete for prizes, and connect with peers.</p>
+                <div class="event-tag">Hackathon</div>
+              </div>
+            </div>
+            <!-- Event 3 --><div class="event-card">
+              <img src="assets/event3.jpg" alt="AI/ML Seminar" class="event-image" onerror="this.src='https://placehold.co/400x300/020617/94a3b8?text=Event+Image'">
+              <div class="event-content">
+                <div class="event-date"> 
+                  <div class="day">15</div> 
+                  <div class="month">JAN</div>
+                </div>
+                <div class="font-bold text-xl heading-strong">AI/ML Fundamentals Seminar</div>
+                <p class="muted mt-1">An introductory seminar on Artificial Intelligence and Machine Learning concepts and applications.</p>
+                <div class="event-tag">Seminar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT --><section id="contact">
+        <div class="page-container panel text-center max-w-5xl mx-auto"> <!-- UNIFORM WIDTH --><h2 class="section-title mb-3">Get In <span>Touch</span></h2> 
+          <p class="muted mb-8">Have a question, a project idea, or want to collaborate? Fill out the form below or follow our channels.</p>
+
+          <form id="contact-form" style="max-width: 600px; margin: 0 auto;"> 
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label for="contact-name" class="form-label">Your Name</label>
+                <input type="text" id="contact-name" name="name" class="form-input" placeholder="John Doe" required>
+              </div>
+              <div class="form-group">
+                <label for="contact-email" class="form-label">Your Email</label>
+                <input type="email" id="contact-email" name="email" class="form-input" placeholder="your.email@example.com" required>
+              </div>
+            </div>
+            <div class="form-group mt-4">
+              <label for="contact-subject" class="form-label">Subject</label>
+              <input type="text" id="contact-subject" name="subject" class="form-input" placeholder="Regarding Club Membership" required>
+            </div>
+            <div class="form-group mt-4">
+              <label for="contact-message" class="form-label">Message</label>
+              <textarea id="contact-message" name="message" class="form-input" placeholder="Type your message here..." required></textarea>
+            </div>
+            <div class="mt-8">
+              <button type="submit" class="primary-cta">Send Message</button>
+            </div>
+          </form>
+          
+          <!-- Social Links --><div class="mt-12 flex justify-center gap-8 text-gray-400"> <!-- Muted color for icons --><a href="#" class="hover:text-blue-500 transition-colors duration-200" aria-label="LinkedIn">
+              <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="#" class="hover:text-blue-500 transition-colors duration-200" aria-label="GitHub">
+              <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="#" class="hover:text-blue-500 transition-colors duration-200" aria-label="Instagram">
+              <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.699-4.919-4.919-.058-1.265-.07-1.646-.07-4.85s.012-3.584.07-4.85c.148-3.227 1.664-4.771 4.919 4.919.058-1.265.07-1.646.07-4.85zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.059 1.689.073 4.948.073s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.358-2.62-6.78-6.979-6.98-1.281-.059-1.69-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.44-.645 1.44-1.44s-.645-1.44-1.44-1.44z"/></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer --><footer class="text-center">
+        <p>Connect with us! <a href="#">GitHub</a> | <a href="#">LinkedIn</a> | <a href="#">Instagram</a></p>
+        <p class="mt-2">© <span id="year"></span> CSI SAU Student Chapter. All Rights Reserved.</p>
+        <p class="mt-1">Designed with <span style="color:var(--csi-blue-light)">&#x2764;</span> for the future of tech.</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- 
+    =================================
+    JAVASCRIPT
+    =================================
+  --><script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- 1. Set Copyright Year ---
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      
+      // --- 2. Typing Effect ---
+      (function(){
+        const el = document.getElementById('typing-effect');
+        if (!el) return;
+        
+        const phrases = [
+          "CSI SAU STUDENT CHAPTER",
+          "Innovate.", 
+          "Collaborate.", 
+          "Lead."
+        ]; 
+        let pIdx = 0, charIdx = 0, forward = true;
+
+        function step(){
+          const p = phrases[pIdx];
+          if(forward){
+            charIdx++;
+            el.textContent = p.slice(0,charIdx);
+            if(charIdx === p.length){
+              forward = false;
+              setTimeout(step, 1500); 
+              return;
+            }
+          } else {
+            charIdx--;
+            el.textContent = p.slice(0,charIdx);
+            if(charIdx === 0){
+              forward = true;
+              pIdx = (pIdx+1) % phrases.length;
+              setTimeout(step, 500); 
+              return;
+            }
+          }
+          setTimeout(step, forward? (90 - Math.random()*20) : (40 + Math.random()*20)); 
+        }
+        step();
+      })();
+
+      
+      // --- 3. Nav Scroll & Active Highlight ---
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          e.preventDefault();
+          const id = a.getAttribute('href');
+          const t = document.querySelector(id);
+          if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+        });
+      });
+      const sections = document.querySelectorAll('section');
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            navLinks.forEach(l=>l.classList.remove('active'));
+            const activeLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+            if(activeLink) activeLink.classList.add('active');
+          }
+        });
+      }, { 
+        rootMargin: '-30% 0px -30% 0px', 
+        threshold: 0.3 
+      });
+      sections.forEach(s=>obs.observe(s));
+      const homeLink = document.querySelector('.nav-link[href="#home"]');
+      if (homeLink) homeLink.classList.add('active');
+
+
+      // --- 4. Tech Connection Background Animation ---
+      (function(){
+        const canvas = document.getElementById('background-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        let nodes = [];
+        const numNodes = Math.floor((width * height) / 8000); /* MORE VISIBLE */
+        const maxDistance = 140; /* MORE VISIBLE */
+        const mouseRadius = 150; 
+        const csiBlue = getComputedStyle(document.documentElement).getPropertyValue('--csi-blue').trim();
+        const csiBlueLight = getComputedStyle(document.documentElement).getPropertyValue('--csi-blue-light').trim();
+
+        class Node {
+          constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.5; 
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.radius = Math.random() * 1.5 + 0.8; /* MORE VISIBLE */
+            this.color = `rgba(0, 123, 255, ${Math.random() * 0.5 + 0.2})`; /* MORE VISIBLE */
+          }
+
+          update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+          }
+
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+          }
+        }
+
+        function initCanvas() {
+          width = window.innerWidth;
+          height = window.innerHeight;
+          canvas.width = width;
+          canvas.height = height;
+          nodes = [];
+          for (let i = 0; i < numNodes; i++) {
+            nodes.push(new Node());
+          }
+        }
+
+        let mouse = { x: undefined, y: undefined };
+        window.addEventListener('mousemove', (event) => {
+          mouse.x = event.x;
+          mouse.y = event.y;
+        });
+        window.addEventListener('mouseout', () => {
+          mouse.x = undefined;
+          mouse.y = undefined;
+        });
+
+        function animate() {
+          requestAnimationFrame(animate);
+          ctx.clearRect(0, 0, width, height);
+
+          for (let i = 0; i < nodes.length; i++) {
+            nodes[i].update();
+            nodes[i].draw();
+
+            // Draw lines between nodes
+            for (let j = i + 1; j < nodes.length; j++) {
+              const dx = nodes[i].x - nodes[j].x;
+              const dy = nodes[i].y - nodes[j].y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              if (distance < maxDistance) {
+                const opacity = 1 - (distance / maxDistance);
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[j].x, nodes[j].y);
+                ctx.strokeStyle = `rgba(0, 123, 255, ${opacity * 0.4})`; /* MORE VISIBLE */
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+              }
+            }
+
+            // Draw line to mouse
+            if (mouse.x && mouse.y) {
+              const dx = nodes[i].x - mouse.x;
+              const dy = nodes[i].y - mouse.y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              if (distance < mouseRadius) {
+                const opacity = 1 - (distance / mouseRadius);
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.strokeStyle = `rgba(0, 170, 255, ${opacity * 0.6})`; /* MORE VISIBLE */
+                ctx.lineWidth = 1;
+                ctx.stroke();
+              }
+            }
+          }
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        animate();
+      })();
+
+
+      // --- 5. Contact Form (Mailto) ---
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const name = document.getElementById('contact-name').value;
+          const email = document.getElementById('contact-email').value;
+          const subject = document.getElementById('contact-subject').value;
+          const message = document.getElementById('contact-message').value;
+          
+          const mailSubject = encodeURIComponent(`CSI SAU Website Contact - ${subject} (${name})`);
+          const mailBody = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+          
+          // !! Replace with your club's actual email address !!
+          const mailtoLink = `mailto:csi.sau@example.com?subject=${mailSubject}&body=${mailBody}`;
+          
+          window.location.href = mailtoLink;
+        });
+      }
+
+    });
+  </script>
+</body>
+</html>
+
