@@ -338,15 +338,14 @@
     }
 
     /* --- 10. TEAM SECTION --- */
-      .team-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  justify-items: center;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
+     #team-leadership-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr); /* Mobile: 1 column */
+      gap: 24px;
+      width: 100%;
+      max-width: 1100px; /* Widen to fit 3 faculty */
+      margin: 0 auto; /* Center it */
+    }
 
     @media (min-width: 768px) { /* md breakpoint (tablets) */
       #team-leadership-grid {
@@ -376,13 +375,15 @@
     /* End of new leadership styles */
 
 
-    .team-grid { 
-      display:grid; 
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Use auto-fit */
-      gap:24px; 
-      width:100%; 
-    }
-    
+    .team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  justify-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
     /* ADDED: Styles for team sub-groups */
     .team-group {
       margin-bottom: 2.5rem; /* space between teams */
@@ -1324,9 +1325,6 @@
   </script>
 </body>
 </html>
-
-
-
 
 
 
