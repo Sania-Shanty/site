@@ -338,14 +338,15 @@
     }
 
     /* --- 10. TEAM SECTION --- */
-     #team-leadership-grid {
+    .team-grid {
       display: grid;
-      grid-template-columns: repeat(1, 1fr); /* Mobile: 1 column */
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
-      width: 100%;
-      max-width: 1100px; /* Widen to fit 3 faculty */
-      margin: 0 auto; /* Center it */
-    }
+      justify-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+}
+
 
     @media (min-width: 768px) { /* md breakpoint (tablets) */
       #team-leadership-grid {
@@ -1323,6 +1324,7 @@
   </script>
 </body>
 </html>
+
 
 
 
