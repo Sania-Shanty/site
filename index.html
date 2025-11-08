@@ -338,21 +338,76 @@
     }
 
     /* --- 10. TEAM SECTION --- */
+     #team-leadership-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr); /* Mobile: 1 column */
+      gap: 24px;
+      width: 100%;
+      max-width: 1100px; /* Widen to fit 3 faculty */
+      margin: 0 auto; /* Center it */
+    }
+
+    @media (min-width: 768px) { /* md breakpoint (tablets) */
+      #team-leadership-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2x2 for tablets */
+      }
+      /* On tablet, president spans 2 cols */
+      #team-leadership-grid .lead-card:first-child {
+        grid-column: 1 / span 2;
+        max-width: 400px; /* Constrain president card width */
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media (min-width: 1024px) { /* lg breakpoint (desktop) */
+      #team-leadership-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 cols for desktop */
+      }
+      /* On desktop, president spans 3 cols */
+      #team-leadership-grid .lead-card:first-child {
+        grid-column: 1 / span 3;
+        max-width: 400px; /* Constrain president card width */
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    /* End of new leadership styles */
+
+
     .team-grid { 
       display:grid; 
-      grid-template-columns: repeat(1, 1fr); 
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Use auto-fit */
       gap:24px; 
       width:100%; 
     }
-    @media (min-width: 640px) {
-      .team-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    
+    /* ADDED: Styles for team sub-groups */
+    .team-group {
+      margin-bottom: 2.5rem; /* space between teams */
+      margin-top: 2.5rem;
     }
-    @media (min-width: 1024px) {
-      .team-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+    .team-title {
+      font-size: 1.75rem; /* h3 size */
+      font-weight: 700;
+      color: var(--primary-text-color);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--panel-border);
+      text-align: center;
+    }
+    .team-title span {
+      color: var(--csi-blue);
+    }
+    .team-toggle-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.5rem;
+      gap: 1rem;
+    }
+    /* ADDED: Hide student view by default */
+    #team-student-view {
+      display: none;
     }
 
     .lead-card { 
@@ -387,8 +442,7 @@
       background: rgba(0, 123, 255, 0.1);
       flex-shrink: 0; 
     }
-    .lead-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
-
+    .lead-avatar img{ width:100%; height:100%; object-fit:cover; display:block; } 
     /* --- 11. EVENTS SECTION (Vertical Rectangles) --- */
     /* NEW: Grid layout for event cards */
     .events-grid {
@@ -649,74 +703,289 @@
         </div>
       </section>
 
-      <!-- TEAM: Core Team Leads --><section id="team">
+    <!-- TEAM: NEW Two-Part Structure --><section id="team">
         <div class="page-container">
-          <h2 class="section-title">Core Team <span>Leads</span></h2> 
 
-          <div class="team-grid mt-6">
-            <!-- Card 1: Technical --><div class="lead-card">
-              <div class="lead-avatar">
-                <img src="assets/team1.jpg" alt="Technical Lead" onerror="this.src='https://placehold.co/320x320/007bff/ffffff?text=Alex'">
+          <!-- VIEW 1: LEADERSHIP (DEFAULT) -->
+          <div id="team-leadership-view">
+            <h2 class="section-title">Our <span>Leadership</span></h2> 
+
+            <div id="team-leadership-grid">
+              <!-- Card 1: President -->
+              <div class="lead-card">
+                <div class="lead-avatar">
+                  <img src="assets/team_president.jpg" alt="President" onerror="this.src='https://placehold.co/320x320/007bff/ffffff?text=President'">
+                </div>
+                <div>
+                  <div class="font-bold text-lg heading-strong">Alex Johnson</div>
+                  <div class="muted text-sm mt-1">President</div>
+                  <p class="muted mt-3 text-sm">Leads the student chapter and initiatives.</p>
+                </div>
               </div>
-              <div>
-                <div class="font-bold text-lg heading-strong">Alex Johnson</div>
-                <div class="muted text-sm mt-1">Technical Lead</div>
-                <p class="muted mt-3 text-sm">Heads technical programs, workshops and project mentorship.</p>
+              
+              <!-- Card 2: Faculty Advisor -->
+              <div class="lead-card">
+                <div class="lead-avatar">
+                  <img src="assets/team_faculty1.jpg" alt="Faculty Advisor" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Faculty'">
+                </div>
+                <div>
+                  <div class="font-bold text-lg heading-strong">Dr. Emily White</div>
+                  <div class="muted text-sm mt-1">Faculty Advisor</div>
+                  <p class="muted mt-3 text-sm">Provides guidance and mentorship.</p>
+                </div>
               </div>
-            </div>
-            
-            <!-- Card 2: Design & Media --><div class="lead-card">
-              <div class="lead-avatar">
-                <img src="assets/team2.jpg" alt="Design Lead" onerror="this.src='https://placehold.co/320x320/007bff/ffffff?text=Devika'">
+              
+              <!-- Card 3: Faculty Advisor -->
+              <div class="lead-card">
+                <div class="lead-avatar">
+                  <img src="assets/team_faculty2.jpg" alt="Faculty Advisor" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Faculty'">
+                </div>
+                <div>
+                  <div class="font-bold text-lg heading-strong">Prof. David Brown</div>
+                  <div class="muted text-sm mt-1">Faculty Advisor</div>
+                  <p class="muted mt-3 text-sm">Connects us with academic resources.</p>
+                </div>
               </div>
-              <div>
-                <div class="font-bold text-lg heading-strong">Devika Smith</div>
-                <div class="muted text-sm mt-1">Design & Media Lead</div>
-                <p class="muted mt-3 text-sm">Designs visuals, manages media & social presence.</p>
-              </div>
-            </div>
-            
-            <!-- Card 3: Event Management --><div class="lead-card">
-              <div class="lead-avatar">
-                <img src="assets/team3.jpg" alt="Events Lead" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Mike'">
-              </div>
-              <div>
-                <div class="font-bold text-lg heading-strong">Mike Chen</div>
-                <div class="muted text-sm mt-1">Events Lead</div>
-                <p class="muted mt-3 text-sm">Organizes events, coordinates logistics & volunteers.</p>
-              </div>
-            </div>
-            
-            <!-- Card 4: Finance --><div class="lead-card">
-              <div class="lead-avatar">
-                <img src="assets/team4.jpg" alt="Finance Lead" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Ria'">
-              </div>
-              <div>
-                <div class="font-bold text-lg heading-strong">Ria Patel</div>
-                <div class="muted text-sm mt-1">Finance & Treasury</div>
-                <p class="muted mt-3 text-sm">Manages budgets, sponsorships and finance operations.</p>
+              
+              <!-- Card 4: Faculty Advisor -->
+              <div class="lead-card">
+                <div class="lead-avatar">
+                  <img src="assets/team_faculty3.jpg" alt="Faculty Advisor" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Faculty'">
+                </div>
+                <div>
+                  <div class="font-bold text-lg heading-strong">Dr. Sarah Chen</div>
+                  <div class="muted text-sm mt-1">Faculty Advisor</div>
+                  <p class="muted mt-3 text-sm">Oversees projects and research.</p>
+                </div>
               </div>
             </div>
 
-            <!-- Card 5: R&D --><div class="lead-card">
-              <div class="lead-avatar">
-                <img src="assets/team5.jpg" alt="R&D Lead" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Sam'">
+            <div class="team-toggle-buttons">
+              <button id="show-student-teams-btn" class="primary-cta">View Student Core Teams</button>
+            </div>
+          </div>
+
+          <!-- VIEW 2: STUDENT TEAMS (HIDDEN) -->
+          <div id="team-student-view">
+            <div class="team-toggle-buttons" style="margin-top: 0; margin-bottom: 2rem;">
+              <button id="show-leadership-btn" class="btn">Back to Leadership</button>
+            </div>
+            
+            <h2 class="section-title">Student Core <span>Teams</span></h2> 
+
+            <!-- Group 1: Technical -->
+            <div class="team-group">
+              <h3 class="team-title"><span>Technical</span> Team</h3>
+              <div class="team-grid">
+                <!-- Lead -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team1.jpg" alt="Technical Lead" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Lead'"></div>
+                  <div>
+                    <div class="font-bold text-lg heading-strong">Devika Smith</div>
+                    <div class="muted text-sm mt-1">Technical Lead</div>
+                  </div>
+                </div>
+                <!-- Core Members -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 1</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 2</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 3</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 4</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 5</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
               </div>
-              <div>
-                <div class="font-bold text-lg heading-strong">Sam Lee</div>
-                <div class="muted text-sm mt-1">Research & Development</div>
-                <p class="muted mt-3 text-sm">Explores new tech, long-term projects, and research papers.</p>
+            </div>
+
+            <!-- Group 2: Design & Media -->
+            <div class="team-group">
+              <h3 class="team-title"><span>Design & Media</span> Team</h3>
+              <div class="team-grid">
+                <!-- Lead -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team2.jpg" alt="Design Lead" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Lead'"></div>
+                  <div>
+                    <div class="font-bold text-lg heading-strong">Mike Chen</div>
+                    <div class="muted text-sm mt-1">Design & Media Lead</div>
+                  </div>
+                </div>
+                <!-- Core Members -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 1</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 2</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 3</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 4</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 5</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Group 3: Event Management -->
+            <div class="team-group">
+              <h3 class="team-title"><span>Event Management</span> Team</h3>
+              <div class="team-grid">
+                <!-- Lead -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team3.jpg" alt="Events Lead" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Lead'"></div>
+                  <div>
+                    <div class="font-bold text-lg heading-strong">Ria Patel</div>
+                    <div class="muted text-sm mt-1">Events Lead</div>
+                  </div>
+                </div>
+                <!-- Core Members -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 1</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 2</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 3</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 4</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 5</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Group 4: Finance & Treasury -->
+            <div class="team-group">
+              <h3 class="team-title"><span>Finance & Treasury</span> Team</h3>
+              <div class="team-grid">
+                <!-- Lead -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team4.jpg" alt="Finance Lead" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Lead'"></div>
+                  <div>
+                    <div class="font-bold text-lg heading-strong">Sam Lee</div>
+                    <div class="muted text-sm mt-1">Finance Lead</div>
+                  </div>
+                </div>
+                <!-- Core Members -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 1</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 2</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 3</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 4</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 5</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Group 5: Research & Development -->
+            <div class="team-group">
+              <h3 class="team-title"><span>Research & Development</span> Team</h3>
+              <div class="team-grid">
+                <!-- Lead -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team5.jpg" alt="R&D Lead" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Lead'"></div>
+                  <div>
+                    <div class="font-bold text-lg heading-strong">Jasmine Kaur</div>
+                    <div class="muted text-sm mt-1">R&D Lead</div>
+                  </div>
+                </div>
+                <!-- Core Members -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 1</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 2</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 3</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 4</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 5</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
               </div>
             </div>
             
-            <!-- Card 6: Docs & Outreach --><div class="lead-card">
-              <div class="lead-avatar">
-                <img src="assets/team6.jpg" alt="Outreach Lead" onerror="this.src='httpsServices/placehold.co/320x320/007bff/ffffff?text=Jasmine'">
-              </div>
-              <div>
-                <div class="font-bold text-lg heading-strong">Jasmine Kaur</div>
-                <div class="muted text-sm mt-1">Documentation & Outreach</div>
-                <p class="muted mt-3 text-sm">Manages public relations, documentation, and external comms.</p>
+            <!-- Group 6: Documentation & Outreach -->
+            <div class="team-group">
+              <h3 class="team-title"><span>Documentation & Outreach</span> Team</h3>
+              <div class="team-grid">
+                <!-- Lead -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team6.jpg" alt="Outreach Lead" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Lead'"></div>
+                  <div>
+                    <div class="font-bold text-lg heading-strong">Chris Lee</div>
+                    <div class="muted text-sm mt-1">Outreach Lead</div>
+                  </div>
+                </div>
+                <!-- Core Members -->
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 1</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 2</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 3</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 4</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
+                <div class="lead-card">
+                  <div class="lead-avatar"><img src="assets/team_core.jpg" alt="Core Member" onerror="this.src='https.placehold.co/320x320/007bff/ffffff?text=Core'"></div>
+                  <div><div class="font-bold text-lg heading-strong">Core Member 5</div><div class="muted text-sm mt-1">Core Member</div></div>
+                </div>
               </div>
             </div>
 
@@ -1025,11 +1294,36 @@
           window.location.href = mailtoLink;
         });
       }
-
+ // --- 6. NEW Team Toggle Logic ---
+  // This is the code that makes your team buttons work
+  const teamLeadershipView = document.getElementById('team-leadership-view');
+  const teamStudentView = document.getElementById('team-student-view');
+  const showStudentBtn = document.getElementById('show-student-teams-btn');
+  const showLeadershipBtn = document.getElementById('show-leadership-btn');
+  
+  if (teamLeadershipView && teamStudentView && showStudentBtn && showLeadershipBtn) {
+    
+    // When you click "View Student Core Teams"
+    showStudentBtn.addEventListener('click', () => {
+      teamLeadershipView.style.display = 'none'; // Hide leadership
+      teamStudentView.style.display = 'block'; // Show students
+      // Scroll back to the top of the team section
+      document.getElementById('team').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    
+    // When you click "Back to Leadership"
+    showLeadershipBtn.addEventListener('click', () => {
+      teamLeadershipView.style.display = 'block'; // Show leadership
+      teamStudentView.style.display = 'none'; // Hide students
+      // Scroll back to the top of the team section
+      document.getElementById('team').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
     });
   </script>
 </body>
 </html>
+
 
 
 
